@@ -13,8 +13,10 @@
     "core-js": "^3.6.5",
     "element-plus": "^2.3.9",
     "element-tiptap-vue3-fixed": "^1.1.6",
+    "grid-layout-plus": "^1.0.2",
     "uuidv4": "^6.2.3",
     "vue": "^3.3.4",
+    "vue3-toastify": "^0.1.12",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
