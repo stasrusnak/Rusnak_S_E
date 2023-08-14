@@ -13,6 +13,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+.el-tiptap-editor__command-button{
+  height: 32px;
+}
 
 a {
   font-weight: 500;
@@ -35,7 +38,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  place-items: top;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -69,10 +72,11 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+}
+.el-header {
+  --el-header-padding: 0  0px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -86,4 +90,18 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.tippy-box {
+  display: none;
+}
+#tippy-1 {
+  display: none;
+}
+.vdc-item-container:hover {
+  box-shadow: none !important;
+}
+.el-card__header {
+  display: flex;
+  flex-direction: column;
 }

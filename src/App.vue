@@ -1,19 +1,50 @@
 <script setup>
   import TipTap from './components/tipTap.vue'
   import Grid from './components/grid.vue'
-  import Grid1 from './components/grid1.vue'
+  import Dialog from './modules/dilogs.vue'
 </script>
 <template>
-
-    <el-row type="flex" justify="center">
-        <el-col :xs="24" :sm="18" :md="14" :lg="12">
-            <TipTap/>
-        </el-col>
-    </el-row>
-    <Grid></Grid>
-<!--    <Grid1></Grid1>-->
+    <div class="common-layout">
+        <el-container  >
+            <el-header>
+                <el-menu default-active="1"
+                         mode="horizontal"
+                         background-color="#473558"
+                         text-color="#fff"
+                         active-text-color="#f3ff0b">
+                    <el-menu-item index="0">   </el-menu-item>
+                    <el-menu-item index="1">Google Keep Analog</el-menu-item>
+                    <el-menu-item index="2"  >
+                        <a href="https://github.com/stasrusnak/Rusnak_S_E" target="_blank">Repository</a>
+                         </el-menu-item>
+                </el-menu>
+            </el-header>
+            <el-main>
+                <Dialog></Dialog>
+                <el-row type="flex" justify="center">
+                    <el-col :xs="24" :sm="18" :md="14" :lg="20">
+                        <TipTap  />
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                    <el-col :xs="24" :sm="18" :md="14" :lg="20">
+                        <Grid></Grid>
+                    </el-col>
+                </el-row>
+            </el-main>
+            <el-footer>Footer</el-footer>
+        </el-container>
+    </div>
 </template>
 
-<style scoped>
+
+
+<style scoped type="scss">
+    .el-main{
+    max-width: 1280px;
+        margin: 0 auto;
+}
+
+
 
 </style>

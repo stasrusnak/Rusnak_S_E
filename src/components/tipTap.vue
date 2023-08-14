@@ -5,10 +5,10 @@
                 v-model="title"
         >
         </el-input>
-        <el-input class="btn_submit" @click.prevent="addNewTodo" type="submit" value="Add"></el-input>
+        <el-button class="btn_submit" type="success" @click.prevent="addNewTodo" >Add</el-button>
     </form>
     <el-tiptap
-            v-model:content="content"
+            v-model="content"
             :extensions="extensions"
             :key="componentKey"
             :enable-char-count="true"
@@ -16,12 +16,9 @@
             placeholder="Напишите что-то..."
             @onUpdate="onEditorUpdate"
     />
-
-    {{ content }}
-    {{ title }}
 </template>
 <script>
-  import { ref ,reactive} from "vue";
+  import { ref } from "vue";
   import { useStore } from "vuex";
   import {
     Doc,
@@ -58,6 +55,7 @@
   } from "element-tiptap-vue3-fixed";
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
+  import {notifySuccess,notifyWarning} from '../utils/toast.js'
 
   export default {
     name: "AddTodo",
@@ -67,24 +65,22 @@
       const content =  ref("");
       const componentKey = ref(0);
 
-      const notify = () => {
-        toast.success("Заметка добавлена!", {
-          autoClose: 1000,
-          theme:"colored"
-        }); // ToastOptions
-      }
-
-
       const addNewTodo = () => {
-        // e.preventDefault();
-        // store.dispatch("onAddTodo", {
-        //   title: title.value,
-        //   content: content.value
-        // });
-        title.value = "";
-        content.value = "";
-        componentKey.value += 1;
-        notify();
+        if( title.value && content.value) {
+          store.dispatch("onAdd", {
+            title: title.value,
+            content: content.value
+          });
+          title.value = "";
+          content.value = "";
+          componentKey.value += 1;
+          notifySuccess("Заметка добавлена!");
+        }else{
+          notifyWarning("Заполните поля");
+        }
+
+
+
       };
       const onEditorUpdate = val => content.value = val;
 
@@ -135,9 +131,7 @@
 </script>
 
 <style scoped>
-    .tippy-box {
-        display: none;
-    }
+
     .title {
         display: flex;
     }

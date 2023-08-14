@@ -1,79 +1,110 @@
 <script setup>
-  import { ref, reactive } from 'vue'
-
-  let index = 4
-  // let presetLayouts = reactive( [
-  //   { x: 0, y: 0, w: 2, h: 2, i: '0' },
-  //   { x: 2, y: 0, w: 2, h: 4, i: '1' },
-  // ])
+  import {useStore} from "vuex";
+  import {computed, onMounted, ref,reactive} from "vue";
+  import {notifySuccess,notifyWarning} from '../utils/toast.js'
+  import Dialog from '../modules/dilogs.vue'
 
 
-  const layout = reactive([
-    { x: 0, y: 0, w: 2, h: 2, i: '0' },
-    { x: 2, y: 0, w: 2, h: 2, i: '1' },
-    { x: 4, y: 0, w: 2, h: 2, i: '2' },
-    { x: 6, y: 0, w: 2, h: 2, i: '3' },
-    { x: 8, y: 0, w: 2, h: 2, i: '4' }
-  ])
+  const store = useStore();
+  const todos = computed(() => store.getters.todos);
+  onMounted(() => {
+    store.dispatch("onFetch")
+  });
 
-  // let layout = ref(presetLayouts)
-  const colNum = ref(5)
+  const deleteTodo = id => {
+    store.dispatch('onDelete', id).then(()=>{
+      notifySuccess('Удалено!')
+    }).catch((e)=>{
+      notifyWarning('Ошибка '+e)
+    });
+  };
+    let visible = ref(null)
 
-  function addItem() {
-    layout.push({
-      x: (layout.length * 2) % (colNum.value || 5),
-      y: layout.length + (colNum.value || 5), // puts it at the bottom
-      w: 2,
-      h: 2,
-      i: `${index++}`
-    })
-  }
+  const box = document.getElementsByClassName("card-container");
+
 </script>
-
 <template>
-    <button type="button" @click="addItem">
-        Add an item dynamically
-    </button>
-    <GridLayout
-            v-model:layout="layout"
-            :col-num="colNum"
-            :responsive-layouts="presetLayouts"
-            :row-height="30"
-            :responsive="true"
-            :key="presetLayouts"
 
-    >
-        <template #item="{ item }">
-            <span class="text">{{ item.i }}</span>
-        </template>
-    </GridLayout>
+    <el-button @click="visible = !visible">
+        Open Dialog with customized header {{visible}}
+    </el-button>
+    <Dialog :visible="visible" :data="{}" > </Dialog>
+
+    <div class="card-container" v-if="todos" >
+        <VDContainer
+                :width=box.offsetWidth
+                :animation=false
+                :data=todos
+                type="sort"
+                :key="todos"
+        >
+            <template v-slot:VDC="{data, index}">
+                <div v-if="data.title && data.content ">
+                    <el-card class="box-card" shadow="hover">
+                        <template #header>
+                            <div class="btn-card">
+                                <el-button type="warning" >
+                                    <el-icon>
+                                        <View/>
+                                    </el-icon>
+                                </el-button>
+                                <el-button type="success" >
+                                    <el-icon>
+                                        <CircleCheck/>
+                                    </el-icon>
+                                </el-button>
+                                <el-button type="danger" @click="deleteTodo(data._id)">
+                                <el-icon>
+                                    <Delete/>
+                                </el-icon>
+                                </el-button>
+
+                            </div>
+                            <div class="card-header">
+                                <span class="card-title">{{data.title}}</span>
+                            </div>
+                        </template>
+                        <div class="text item" v-html="data.content"></div>
+                    </el-card>
+                </div>
+            </template>
+        </VDContainer>
+    </div>
+
 </template>
 
-<style scoped>
-    .vgl-layout {
-        background-color: #eee;
+<style scoped type="scss">
+    .box-card {
+        width: 254px;
+        height: 300px;
+        margin: 5px 5px;
     }
 
-    :deep(.vgl-item:not(.vgl-item--placeholder)) {
-        background-color: #ccc;
-        border: 1px solid black;
+    .card-header {
+        display: flex;
+        justify-content: center;
     }
 
-    :deep(.vgl-item--resizing) {
-        opacity: 90%;
+    .card-container {
+        display: flex;
+    }
+    .el-button +.el-button{
+        margin-left: 1px  ;
+    }
+    .btn-card {
+        display: flex;
+        justify-content: end;
+        position: relative;
+        top: -18px;
+        left: 20px;
+        align-items: revert;
+        float: right;
+
+
+    }
+    .btn-card > .el-button {
+        height: 22px  ;
+        padding: 8px 12px;
     }
 
-    :deep(.vgl-item--static) {
-        background-color: #cce;
-    }
-
-    .text {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        margin: auto;
-        font-size: 24px;
-        text-align: center;
-    }
 </style>
