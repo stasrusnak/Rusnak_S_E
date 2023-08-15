@@ -4,9 +4,12 @@ import {
   FETCH_TODOS,
   ADD_TODOS,
   DELETE_TODOS,
-  UPDATE_TODOS,
-  OPEN_DIALOG
+  UPDATE_TODOS
 } from '../action-types';
+
+import {
+  SET_OPEN_DIALOG
+} from '../mutation-types';
 
 
 export default Vuex.createStore({
@@ -25,8 +28,8 @@ export default Vuex.createStore({
     [ADD_TODOS]: (state, todo) => state.todos.unshift(todo),
     [FETCH_TODOS](state, todos) {   state.todos = todos  },
     [DELETE_TODOS]: (state, id) =>
-      (state.todos = state.todos.filter((todo) => todo.id !== id)),
-    [OPEN_DIALOG](state, dialog) {
+      (state.todos = state.todos.filter((todo) => todo._id !== id)),
+    [SET_OPEN_DIALOG](state, dialog) {
       state.dialog = dialog
     },
   },
@@ -36,7 +39,6 @@ export default Vuex.createStore({
         "http://localhost:8081/posts",
         { data, completed: false }
       );
-      console.log(response);
       commit(ADD_TODOS, response.data);
     },
     onFetch: async ({ commit }) => {
@@ -50,7 +52,7 @@ export default Vuex.createStore({
       commit(DELETE_TODOS, id);
     },
     onOpenDialog: async ({ commit }, dialog) => {
-      commit(OPEN_DIALOG, dialog);
+      commit(SET_OPEN_DIALOG, dialog);
     },
   },
 });

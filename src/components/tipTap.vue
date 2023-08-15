@@ -5,7 +5,7 @@
                 v-model="title"
         >
         </el-input>
-        <el-button class="btn_submit" type="success" @click.prevent="addNewTodo" >Add</el-button>
+        <el-button class="btn_submit" type="success" @click.prevent="addNewTodo">Add</el-button>
     </form>
     <el-tiptap
             v-model="content"

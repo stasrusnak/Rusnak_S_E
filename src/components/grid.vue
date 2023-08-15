@@ -1,14 +1,15 @@
 <script setup>
   import {useStore} from "vuex";
-  import {computed, onMounted, ref, reactive} from "vue";
+  import {computed, onMounted } from "vue";
   import {notifySuccess, notifyWarning} from '../utils/toast.js'
-  import Dialog from '../modules/dilogs.vue'
-
 
   const store = useStore();
   const todos = computed(() => store.getters.todos);
   onMounted(() => {
     store.dispatch("onFetch")
+       .catch((e) => {
+      notifyWarning('Ошибка ' + e)
+    });
   });
 
   const deleteTodo = id => {
@@ -19,24 +20,22 @@
     });
   };
 
-
   const box = document.getElementsByClassName("card-container");
-
   function setDialog(dialog) {
-
     store.dispatch("onOpenDialog", {
       visible: true,
       data:dialog
     });
   }
 
+
 </script>
 <template>
     <Dialog></Dialog>
-    <div class="card-container" v-if="todos">
+    <div class="card-container" v-show="todos" >
         <VDContainer
                 :width=box.offsetWidth
-                :animation=false
+                :animation=true
                 :data=todos
                 type="sort"
                 :key="todos"
@@ -103,8 +102,6 @@
         left: 20px;
         align-items: revert;
         float: right;
-
-
     }
 
     .btn-card > .el-button {
