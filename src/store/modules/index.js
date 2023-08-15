@@ -12,7 +12,10 @@ import {
 export default Vuex.createStore({
   state: {
     todos: [],
-    dialog: [],
+    dialog: [{
+      visible: true,
+      data:{}
+    }],
   },
   getters:{
     todos: state => state.todos,

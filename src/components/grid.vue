@@ -18,25 +18,21 @@
       notifyWarning('Ошибка ' + e)
     });
   };
-  let visible = ref(true)
+
 
   const box = document.getElementsByClassName("card-container");
 
-  function setDialog() {
+  function setDialog(dialog) {
 
     store.dispatch("onOpenDialog", {
-      visible: visible =!visible
+      visible: true,
+      data:dialog
     });
   }
 
 </script>
 <template>
-
-    <el-button @click="setDialog">
-        Open Dialog with customized header {{visible}}
-    </el-button>
-    <Dialog> </Dialog>
-
+    <Dialog></Dialog>
     <div class="card-container" v-if="todos">
         <VDContainer
                 :width=box.offsetWidth
@@ -46,13 +42,13 @@
                 :key="todos"
         >
             <template v-slot:VDC="{data, index}">
-                <div v-if="data.title && data.content ">
+                <div v-if="data.title && data.content" >
                     <el-card class="box-card" shadow="hover">
                         <template #header>
                             <div class="btn-card">
-                                <el-button type="warning">
+                                <el-button type="warning" @click="setDialog(data)">
                                     <el-icon>
-                                        <View/>
+                                        <View />
                                     </el-icon>
                                 </el-button>
                                 <el-button type="success">
@@ -65,7 +61,6 @@
                                         <Delete/>
                                     </el-icon>
                                 </el-button>
-
                             </div>
                             <div class="card-header">
                                 <span class="card-title">{{data.title}}</span>

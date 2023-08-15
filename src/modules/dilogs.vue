@@ -1,29 +1,27 @@
 <script setup>
-  import {ref,  toRaw, computed,watch} from 'vue'
+  import {computed} from 'vue'
   import {useStore} from "vuex";
   const store = useStore();
+  const openDialog = computed(() =>
+        store.getters.dialog
+  );
 
-  const openDialog = computed(() => store.getters.dialog);
-
-  let visibleDialog = ref(true)
-
-  watch(openDialog, (newopenDialog) => {
-    // Do something with the updated value.
-    console.log('newopenDialog')
-    let data = toRaw(newopenDialog)
-    visibleDialog =  data.visible
-    console.log(visibleDialog)
-  });
 
 </script>
 
 <template>
-
-  <el-dialog v-model="visibleDialog" title="Shipping address" >
-    This is dialog content.
-  </el-dialog>
-
-  <div :key="visibleDialog"> {{visibleDialog}} </div>
+    <el-dialog v-model="openDialog.visible" :show-close="false" class="dialog">
+      <template #header="{ close, titleId, titleClass }">
+        <div class="my-header">
+          <span :id="titleId" :class="titleClass">{{openDialog.data.title}}</span>
+          <el-button type="danger" @click="close">
+            <el-icon class="el-icon--left"> <CircleCloseFilled /></el-icon>
+            Close
+          </el-button>
+        </div>
+      </template>
+      <div v-html="openDialog.data.content"></div>
+    </el-dialog>
 </template>
 
 
