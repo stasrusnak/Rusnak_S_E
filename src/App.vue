@@ -20,7 +20,6 @@
                 </el-menu>
             </el-header>
             <el-main>
-                <Dialog></Dialog>
                 <el-row type="flex" justify="center">
                     <el-col :xs="24" :sm="18" :md="14" :lg="20">
                         <TipTap  />

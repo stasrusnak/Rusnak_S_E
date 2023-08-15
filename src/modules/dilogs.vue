@@ -1,35 +1,29 @@
 <script setup>
-  import { ref, defineProps ,defineEmits,watch} from 'vue'
-  import { ElButton, ElDialog } from 'element-plus'
-  import { CircleCloseFilled } from '@element-plus/icons-vue'
+  import {ref,  toRaw, computed,watch} from 'vue'
+  import {useStore} from "vuex";
+  const store = useStore();
 
-  const props = defineProps({
-    data: Object,
-    visible: Boolean
-  })
-  console.log(props.visible)
+  const openDialog = computed(() => store.getters.dialog);
 
-  watch(close, (close, prevCount) => {
-    /* ... */
-    console.log(close)
-  })
+  let visibleDialog = ref(true)
+
+  watch(openDialog, (newopenDialog) => {
+    // Do something with the updated value.
+    console.log('newopenDialog')
+    let data = toRaw(newopenDialog)
+    visibleDialog =  data.visible
+    console.log(visibleDialog)
+  });
 
 </script>
 
 <template>
 
-  <el-dialog v-model="props.visible" :show-close="false" >
-    <template #header="{ close, titleId, titleClass }">
-      <div class="my-header">
-        <h4 :id="titleId" :class="titleClass">This is a custom header!</h4>
-        <el-button type="danger"  @click="close">
-          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
-          Close
-        </el-button>
-      </div>
-    </template>
+  <el-dialog v-model="visibleDialog" title="Shipping address" >
     This is dialog content.
   </el-dialog>
+
+  <div :key="visibleDialog"> {{visibleDialog}} </div>
 </template>
 
 

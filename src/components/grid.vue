@@ -1,7 +1,7 @@
 <script setup>
   import {useStore} from "vuex";
-  import {computed, onMounted, ref,reactive} from "vue";
-  import {notifySuccess,notifyWarning} from '../utils/toast.js'
+  import {computed, onMounted, ref, reactive} from "vue";
+  import {notifySuccess, notifyWarning} from '../utils/toast.js'
   import Dialog from '../modules/dilogs.vue'
 
 
@@ -12,25 +12,32 @@
   });
 
   const deleteTodo = id => {
-    store.dispatch('onDelete', id).then(()=>{
+    store.dispatch('onDelete', id).then(() => {
       notifySuccess('Удалено!')
-    }).catch((e)=>{
-      notifyWarning('Ошибка '+e)
+    }).catch((e) => {
+      notifyWarning('Ошибка ' + e)
     });
   };
-    let visible = ref(null)
+  let visible = ref(true)
 
   const box = document.getElementsByClassName("card-container");
+
+  function setDialog() {
+
+    store.dispatch("onOpenDialog", {
+      visible: visible =!visible
+    });
+  }
 
 </script>
 <template>
 
-    <el-button @click="visible = !visible">
+    <el-button @click="setDialog">
         Open Dialog with customized header {{visible}}
     </el-button>
-    <Dialog :visible="visible" :data="{}" > </Dialog>
+    <Dialog> </Dialog>
 
-    <div class="card-container" v-if="todos" >
+    <div class="card-container" v-if="todos">
         <VDContainer
                 :width=box.offsetWidth
                 :animation=false
@@ -43,20 +50,20 @@
                     <el-card class="box-card" shadow="hover">
                         <template #header>
                             <div class="btn-card">
-                                <el-button type="warning" >
+                                <el-button type="warning">
                                     <el-icon>
                                         <View/>
                                     </el-icon>
                                 </el-button>
-                                <el-button type="success" >
+                                <el-button type="success">
                                     <el-icon>
                                         <CircleCheck/>
                                     </el-icon>
                                 </el-button>
                                 <el-button type="danger" @click="deleteTodo(data._id)">
-                                <el-icon>
-                                    <Delete/>
-                                </el-icon>
+                                    <el-icon>
+                                        <Delete/>
+                                    </el-icon>
                                 </el-button>
 
                             </div>
@@ -88,9 +95,11 @@
     .card-container {
         display: flex;
     }
-    .el-button +.el-button{
-        margin-left: 1px  ;
+
+    .el-button + .el-button {
+        margin-left: 1px;
     }
+
     .btn-card {
         display: flex;
         justify-content: end;
@@ -102,8 +111,9 @@
 
 
     }
+
     .btn-card > .el-button {
-        height: 22px  ;
+        height: 22px;
         padding: 8px 12px;
     }
 

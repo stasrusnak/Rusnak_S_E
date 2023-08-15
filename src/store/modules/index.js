@@ -5,23 +5,27 @@ import {
   ADD_TODOS,
   DELETE_TODOS,
   UPDATE_TODOS,
+  OPEN_DIALOG
 } from '../action-types';
 
 
 export default Vuex.createStore({
   state: {
     todos: [],
+    dialog: [],
   },
   getters:{
-    todos: state => state.todos
+    todos: state => state.todos,
+    dialog: state => state.dialog,
   },
   mutations: {
     [ADD_TODOS]: (state, todo) => state.todos.unshift(todo),
-    [FETCH_TODOS](state, todos) {
-      state.todos = todos
-    },
+    [FETCH_TODOS](state, todos) {   state.todos = todos  },
     [DELETE_TODOS]: (state, id) =>
       (state.todos = state.todos.filter((todo) => todo.id !== id)),
+    [OPEN_DIALOG](state, dialog) {
+      state.dialog = dialog
+    },
   },
   actions: {
     onAdd: async ({ commit }, data) => {
@@ -41,6 +45,9 @@ export default Vuex.createStore({
     onDelete: async ({ commit }, id) => {
       Axios.delete(`http://localhost:8081/posts/${id}`);
       commit(DELETE_TODOS, id);
+    },
+    onOpenDialog: async ({ commit }, dialog) => {
+      commit(OPEN_DIALOG, dialog);
     },
   },
 });
