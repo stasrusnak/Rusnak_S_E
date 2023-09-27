@@ -20,7 +20,7 @@
           </el-button>
         </div>
       </template>
-      <div v-html="openDialog.data.content"></div>
+      <div class="dialogBody" v-html="openDialog.data.content"></div>
     </el-dialog>
 </template>
 
@@ -30,5 +30,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+  .dialogBody{
+    overflow-y:auto;
   }
 </style>

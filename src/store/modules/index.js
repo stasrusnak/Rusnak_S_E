@@ -54,5 +54,12 @@ export default Vuex.createStore({
     onOpenDialog: async ({ commit }, dialog) => {
       commit(SET_OPEN_DIALOG, dialog);
     },
+    onUpdate: async ({ commit }, todo) => {
+      console.log(todo);
+      const response = await Axios.put(
+        `http://localhost:8081/posts/${todo._id}`,
+      );
+      commit(UPDATE_TODOS, response.data);
+    },
   },
 });

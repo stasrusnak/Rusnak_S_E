@@ -69,7 +69,8 @@
         if( title.value && content.value) {
           store.dispatch("onAdd", {
             title: title.value,
-            content: content.value
+            content: content.value,
+            complete: false
           });
           title.value = "";
           content.value = "";

@@ -19,6 +19,13 @@
       notifyWarning('Ошибка ' + e)
     });
   };
+  const upDateTodo = todo => {
+    store.dispatch('onUpdate', todo).then(() => {
+      notifySuccess('Завершено!')
+    }).catch((e) => {
+      notifyWarning('Ошибка ' + e)
+    });
+  };
 
   const box = document.getElementsByClassName("card-container");
   function setDialog(dialog) {
@@ -50,7 +57,7 @@
                                         <View />
                                     </el-icon>
                                 </el-button>
-                                <el-button type="success">
+                                <el-button type="success" @click="upDateTodo(data)">
                                     <el-icon>
                                         <CircleCheck/>
                                     </el-icon>
