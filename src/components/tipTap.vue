@@ -1,10 +1,6 @@
 <template>
     <form class="title">
-        <el-input
-                placeholder="Заголовок"
-                v-model="title"
-        >
-        </el-input>
+        <el-input placeholder="Заголовок" v-model="title"> </el-input>
         <el-button class="btn_submit" type="success" @click.prevent="addNewTodo">Add</el-button>
     </form>
     <el-tiptap
