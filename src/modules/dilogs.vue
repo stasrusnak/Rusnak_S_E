@@ -5,8 +5,6 @@
   const openDialog = computed(() =>
         store.getters.dialog
   );
-
-
 </script>
 
 <template>
@@ -23,7 +21,6 @@
       <div class="dialogBody" v-html="openDialog.data.content"></div>
     </el-dialog>
 </template>
-
 
 <style scoped>
   .my-header {

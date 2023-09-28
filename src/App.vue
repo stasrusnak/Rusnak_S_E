@@ -43,7 +43,7 @@
     .el-main{
     max-width: 1280px;
         margin: 0 auto;
-}
+    }
     .footer{
         background-color: #473558;
         position: fixed;
